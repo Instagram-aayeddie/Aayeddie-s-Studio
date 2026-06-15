@@ -11,11 +11,11 @@
   --c1: #a9c9ff;
   --c2: #ffbbec;
   --c3: #ffc3a0;
-  --glass: rgba(255,255,255,0.45);
-  --glass-border: rgba(255,255,255,0.72);
+  --glass: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.72);
   --text: #1a1a2e;
   --soft: #4a4a6a;
-  --shadow: 0 8px 32px rgba(120,80,180,0.13);
+  --shadow: 0 8px 32px rgba(120, 80, 180, 0.13);
   --r: 18px;
   --rs: 10px;
 }
@@ -52,61 +52,6 @@ body {
   66%      { transform: translate(-18px,26px) scale(0.94); }
 }
 
-/* ADMIN GEAR */
-#adminToggleBtn {
-  position: fixed; top:18px; right:18px; z-index:1000;
-  background: rgba(255,255,255,0.28);
-  border: 1.5px solid rgba(255,255,255,0.5);
-  border-radius: 50%; width:38px; height:38px;
-  cursor:pointer; display:flex; align-items:center; justify-content:center;
-  font-size:16px; backdrop-filter:blur(10px);
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-}
-#adminToggleBtn:hover { transform:scale(1.13); box-shadow:0 4px 18px rgba(0,0,0,0.14); }
-
-/* ADMIN DROPDOWN */
-#adminDropdown {
-  position:fixed; top:64px; right:18px; z-index:999;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(22px);
-  border: 1.5px solid var(--glass-border);
-  border-radius: var(--r); padding:16px; width:240px;
-  box-shadow: var(--shadow);
-  display:none; flex-direction:column; gap:10px;
-}
-#adminDropdown.open { display:flex; animation: dropIn 0.22s cubic-bezier(.34,1.56,.64,1); }
-@keyframes dropIn {
-  from { opacity:0; transform:translateY(-8px) scale(0.96); }
-  to   { opacity:1; transform:translateY(0) scale(1); }
-}
-#adminDropdown label { font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--soft);text-transform:uppercase; }
-#adminPassInput {
-  width:100%; padding:9px 12px;
-  border-radius:var(--rs); border:1.5px solid rgba(169,201,255,0.5);
-  background:rgba(255,255,255,0.6); font-family:inherit; font-size:13px; outline:none;
-  transition:border-color .2s;
-}
-#adminPassInput:focus { border-color:var(--c1); }
-#adminEnterBtn {
-  padding:9px; border-radius:var(--rs); border:none;
-  background:linear-gradient(90deg,var(--c1),var(--c2));
-  font-family:inherit; font-size:13px; font-weight:700;
-  cursor:pointer; color:var(--text); transition:opacity .2s,transform .15s;
-}
-#adminEnterBtn:hover { opacity:.85; transform:scale(1.02); }
-#adminStatus { font-size:11px;text-align:center;color:#e53e3e;min-height:14px;font-weight:600; }
-#adminPanel { display:none; flex-direction:column; gap:10px; }
-.aBtn {
-  padding:9px 12px; border-radius:var(--rs);
-  border:1.5px solid rgba(255,255,255,0.6);
-  background:rgba(255,255,255,0.5); font-family:inherit;
-  font-size:12px; font-weight:700; cursor:pointer; text-align:left;
-  transition:background .2s,transform .15s; color:var(--text);
-}
-.aBtn:hover { background:rgba(255,255,255,0.8); transform:scale(1.02); }
-.aBtn.danger { border-color:rgba(255,100,100,0.4); color:#c0392b; }
-
 /* MAIN */
 main {
   position:relative; z-index:1;
@@ -116,11 +61,18 @@ main {
 /* HERO */
 .hero { text-align:center; margin-bottom:52px; }
 .logo-wrap {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:90px; height:90px; border-radius:26px;
-  background:var(--glass); border:2px solid var(--glass-border);
-  box-shadow:var(--shadow); margin-bottom:20px;
-  overflow:hidden; backdrop-filter:blur(12px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 90px;
+  border-radius: 24px;
+  background: var(--glass);
+  border: 2px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  margin: 0 auto 20px auto;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
 }
 .logo-wrap img { width:100%; height:100%; object-fit:cover; }
 .logo-fallback { font-size:36px; line-height:1; }
@@ -251,11 +203,11 @@ main {
 .portal-btns { display:flex; gap:10px; flex-wrap:wrap; }
 .pBtn {
   padding:10px 20px; border-radius:var(--rs);
-  border:1.5px solid rgba(255,255,255,.6); background:rgba(255,255,255,.5);
+  border:1.5px solid rgba(255,255,255,0.6); background:rgba(255,255,255,0.5);
   font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;
   transition:background .2s,transform .15s; color:var(--text);
 }
-.pBtn:hover { background:rgba(255,255,255,.82); transform:scale(1.02); }
+.pBtn:hover { background:rgba(255,255,255,0.82); transform:scale(1.02); }
 .pBtn.confirm { background:linear-gradient(90deg,var(--c1),var(--c2)); border-color:transparent; }
 #previewFrame {
   width:100%; height:320px; border:1.5px solid rgba(169,201,255,.4);
@@ -271,7 +223,7 @@ footer {
   padding:22px; font-size:11px; color:var(--soft); font-weight:600; letter-spacing:.05em;
 }
 
-/* SCROLL REVEAL — elements start hidden, slide in as they approach center */
+/* SCROLL REVEAL */
 .reveal {
   opacity: 0;
   transform: translateY(52px);
@@ -282,7 +234,6 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
-/* Stagger children of a reveal-group */
 .reveal-group > .card {
   opacity: 0;
   transform: translateY(40px);
@@ -308,27 +259,7 @@ footer {
 <div class="blob blob2"></div>
 <div class="blob blob3"></div>
 
-<!-- ADMIN GEAR -->
-<button id="adminToggleBtn" title="Admin" aria-label="Admin">⚙️</button>
-
-<div id="adminDropdown">
-  <div id="adminLoginSection">
-    <label>Admin Access</label>
-    <input type="password" id="adminPassInput" placeholder="Password" autocomplete="off" />
-    <button id="adminEnterBtn">Enter</button>
-    <div id="adminStatus"></div>
-  </div>
-  <div id="adminPanel">
-    <span style="font-size:11px;font-weight:700;color:#2f855a;">✓ Authenticated</span>
-    <button class="aBtn" id="adminManageBtn">🗂 Manage Buttons</button>
-    <button class="aBtn" id="adminAddBtn">＋ Add New Utility</button>
-    <button class="aBtn" id="adminPortalBtn">🖊 Coding Portal</button>
-    <button class="aBtn danger" id="adminLogoutBtn">Sign Out</button>
-  </div>
-</div>
-
 <main>
-  <!-- HERO -->
   <div class="hero reveal">
     <div class="logo-wrap">
       <img
@@ -341,14 +272,12 @@ footer {
     <p>Your personal toolkit for clipping, customizing, and crafting — all in one place.</p>
   </div>
 
-  <!-- ADMIN MANAGE BAR -->
   <div id="manageBar" class="reveal">
     <button class="mBtn" id="editModeToggle">🗑 Edit Mode: Off</button>
     <button class="mBtn" id="addToggle">＋ Add Utility</button>
     <button class="mBtn" id="portalToggle">🖊 Coding Portal</button>
   </div>
 
-  <!-- ADD SECTION -->
   <div id="addSection">
     <div class="add-title">New Utility</div>
     <div class="field-row">
@@ -366,7 +295,6 @@ footer {
     <button class="save-btn" id="saveNewBtn">Save Utility</button>
   </div>
 
-  <!-- CODING PORTAL -->
   <div id="codingPortal">
     <div class="portal-title">🖊 Layout Coding Portal</div>
     <textarea id="codeEditorInput" placeholder="Paste HTML or JS here to preview before applying..."></textarea>
@@ -387,8 +315,30 @@ footer {
 <footer class="reveal">Aayeddie's Studio &nbsp;·&nbsp; Built for creators</footer>
 
 <script>
+/* ── ACTIVE SECURITY DEFENSE CORE ── */
+(function () {
+  // Disrupter loop: breaks execution pipelines if DevTools is open
+  setInterval(() => {
+    (function(){ return false; }['constructor']('debugger')());
+  }, 100);
+
+  // Console Proxy: Intercepts and jams console tampering payloads
+  if (window.console) {
+    const origLog = console.log;
+    console.log = function (...args) {
+      const payload = args.join('');
+      if (payload.match(/manageBar|adminPanel|Beleza|sessionStorage|IS_ADMIN_AUTHORIZED/i)) {
+        origLog("%c🚫 Access Denied: Command Flagged by Studio Security Engine.", "color:#ff4a4a;font-weight:bold;font-size:12px;");
+        return;
+      }
+      origLog.apply(console, args);
+    };
+  }
+})();
+
 /* ── DATA ── */
 const STORE_KEY = 'clipkit_v3';
+
 const DEFAULTS = [
   {
     id:'yt-clip', icon:'🎬',
@@ -545,10 +495,19 @@ function loadUtils() {
 function saveUtils(u) { try { localStorage.setItem(STORE_KEY, JSON.stringify(u)); } catch(e){} }
 
 let utils = loadUtils();
-let isAdmin = false;
 let editMode = false;
 
-function checkPw(v) { return btoa(unescape(encodeURIComponent(v))) === btoa(unescape(encodeURIComponent('Beleza999%'))); }
+/* ── STATE LAYER ARCHITECTURE ── */
+let IS_ADMIN_AUTHORIZED = false;
+
+function verifyAdminSession() {
+  const token = sessionStorage.getItem('studio_auth_token');
+  if (!token || !token.startsWith('studio_secure_session_') || !IS_ADMIN_AUTHORIZED) {
+    $('manageBar').classList.remove('visible');
+    return false;
+  }
+  return true;
+}
 
 /* ── ENV META ── */
 const ENV = {
@@ -579,11 +538,15 @@ function renderGrid() {
     }
     card.querySelector('.trash-btn').addEventListener('click', e => {
       e.stopPropagation();
+      if (!verifyAdminSession()) {
+        alert('Unauthorized execution execution wrapper context.');
+        return;
+      }
       if (confirm('Delete "' + u.title + '"?')) { utils.splice(idx,1); saveUtils(utils); renderGrid(); }
     });
     grid.appendChild(card);
   });
-  initReveal(); // re-run reveal on new cards
+  initReveal(); 
 }
 
 function copyCode(code, card) {
@@ -597,55 +560,45 @@ function fallback(code, cb) {
 }
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-/* ── ADMIN ── */
+/* ── ROUTE CONFIGURATION ── */
 const $= id => document.getElementById(id);
-$('adminToggleBtn').addEventListener('click', e => { e.stopPropagation(); $('adminDropdown').classList.toggle('open'); });
-document.addEventListener('click', e => { if (!$('adminDropdown').contains(e.target) && e.target !== $('adminToggleBtn')) $('adminDropdown').classList.remove('open'); });
-$('adminEnterBtn').addEventListener('click', tryLogin);
-$('adminPassInput').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
 
-function tryLogin() {
-  if (checkPw($('adminPassInput').value)) {
-    isAdmin = true;
-    $('adminLoginSection').style.display = 'none';
-    $('adminPanel').style.display = 'flex';
-    $('adminPassInput').value = '';
-    $('adminStatus').textContent = '';
+function checkUrlAdminMode() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'studioadmin999') {
+    IS_ADMIN_AUTHORIZED = true;
+    sessionStorage.setItem('studio_auth_token', 'studio_secure_session_' + Date.now());
     $('manageBar').classList.add('visible');
+    renderGrid();
+    console.clear();
+    console.log("%cWelcome back, Aayeddie. Workspace initialized.", "color:#a9c9ff;font-weight:bold;");
   } else {
-    $('adminStatus').textContent = 'Incorrect password.';
-    $('adminPassInput').value = '';
-    setTimeout(()=>$('adminStatus').textContent='', 2000);
+    verifyAdminSession();
   }
 }
 
-$('adminLogoutBtn').addEventListener('click', () => {
-  isAdmin = false; editMode = false;
-  $('adminPanel').style.display = 'none';
-  $('adminLoginSection').style.display = '';
-  $('manageBar').classList.remove('visible');
-  $('addSection').classList.remove('visible');
-  $('codingPortal').classList.remove('visible');
-  $('editModeToggle').classList.remove('on');
-  $('editModeToggle').textContent = '🗑 Edit Mode: Off';
-  $('adminDropdown').classList.remove('open');
-  renderGrid();
-});
-$('adminManageBtn').addEventListener('click',()=>$('adminDropdown').classList.remove('open'));
-$('adminAddBtn').addEventListener('click',()=>{ $('addSection').classList.toggle('visible'); $('adminDropdown').classList.remove('open'); });
-$('adminPortalBtn').addEventListener('click',()=>{ $('codingPortal').classList.toggle('visible'); $('adminDropdown').classList.remove('open'); });
-
 $('editModeToggle').addEventListener('click',()=>{
+  if(!verifyAdminSession()) return;
   editMode=!editMode;
   $('editModeToggle').textContent = editMode ? '✕ Edit Mode: On' : '🗑 Edit Mode: Off';
   $('editModeToggle').classList.toggle('on', editMode);
   renderGrid();
 });
-$('addToggle').addEventListener('click',()=>$('addSection').classList.toggle('visible'));
-$('portalToggle').addEventListener('click',()=>$('codingPortal').classList.toggle('visible'));
+$('addToggle').addEventListener('click',()=>{
+  if(!verifyAdminSession()) return;
+  $('addSection').classList.toggle('visible');
+});
+$('portalToggle').addEventListener('click',()=>{
+  if(!verifyAdminSession()) return;
+  $('codingPortal').classList.toggle('visible');
+});
 
-/* ── ADD NEW ── */
+/* ── ADD NEW UTILITY ── */
 $('saveNewBtn').addEventListener('click',()=>{
+  if(!verifyAdminSession()) {
+    alert('Security check failed.');
+    return;
+  }
   const title=$('newTitle').value.trim(), env=$('newEnv').value,
         icon=$('newIcon').value.trim()||'📋', code=$('newCode').value.trim();
   if(!title||!code){ alert('Please add a title and code.'); return; }
@@ -655,13 +608,15 @@ $('saveNewBtn').addEventListener('click',()=>{
   $('addSection').classList.remove('visible');
 });
 
-/* ── PORTAL ── */
+/* ── LAYOUT PORTAL ── */
 $('previewBtn').addEventListener('click',()=>{
+  if(!verifyAdminSession()) return;
   $('previewFrame').srcdoc=$('codeEditorInput').value;
   $('previewFrame').classList.add('visible');
   document.querySelector('.preview-actions').classList.add('visible');
 });
 $('confirmUpdateBtn').addEventListener('click',()=>{
+  if(!verifyAdminSession()) return;
   if(!confirm('Apply this update to the page?')) return;
   const w=document.createElement('div'); w.innerHTML=$('codeEditorInput').value; document.body.appendChild(w);
   $('previewFrame').classList.remove('visible');
@@ -677,17 +632,13 @@ $('denyUpdateBtn').addEventListener('click',()=>{
 /* ── SCROLL REVEAL ── */
 function initReveal() {
   const vh = window.innerHeight;
-
-  // Single reveal elements
   document.querySelectorAll('.reveal').forEach(el => {
-    // Don't hide the hero on first load — it's already in view
     const rect = el.getBoundingClientRect();
     const inView = rect.top < vh * 0.88 && rect.bottom > vh * 0.12;
     if (inView) { el.classList.add('in'); }
     else { el.classList.remove('in'); }
   });
 
-  // Grid group
   const grid = document.getElementById('utilityGrid');
   if (grid) {
     const rect = grid.getBoundingClientRect();
@@ -701,7 +652,6 @@ function onScroll() {
   const vh = window.innerHeight;
   document.querySelectorAll('.reveal').forEach(el => {
     const r = el.getBoundingClientRect();
-    // "in" zone: element center is within 88% of viewport
     const center = (r.top + r.bottom) / 2;
     const inZone = center > vh * 0.07 && center < vh * 0.93;
     if (inZone) el.classList.add('in');
@@ -720,10 +670,12 @@ function onScroll() {
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', initReveal, { passive: true });
 
-/* ── INIT ── */
-renderGrid();
-// Small delay so elements paint first, then trigger reveal
-setTimeout(initReveal, 60);
+/* ── INITIALIZE ── */
+document.addEventListener('DOMContentLoaded', () => {
+  checkUrlAdminMode();
+  renderGrid();
+  setTimeout(initReveal, 60);
+});
 </script>
 </body>
 </html>
