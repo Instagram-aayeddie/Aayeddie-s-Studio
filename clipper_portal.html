@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aayeddie's Studio</title>
+<link rel="icon" href="https://raw.githubusercontent.com/Instagram-aayeddie/IMAGES/main/ChatGPT%20Image%20Jun%2014%2C%202026%20at%2006_01_32%20PM.png" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --c1: #a9c9ff;
+  --c2: #ffbbec;
+  --c3: #ffc3a0;
+  --glass: rgba(255,255,255,0.45);
+  --glass-border: rgba(255,255,255,0.72);
+  --text: #1a1a2e;
+  --soft: #4a4a6a;
+  --shadow: 0 8px 32px rgba(120,80,180,0.13);
+  --r: 18px;
+  --rs: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
+  background-size: 300% 300%;
+  animation: gradShift 12s ease infinite;
+  color: var(--text);
+  overflow-x: hidden;
+}
+@keyframes gradShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* BLOBS */
+.blob {
+  position: fixed; border-radius: 50%;
+  filter: blur(65px); opacity: 0.32;
+  pointer-events: none; z-index: 0;
+  animation: blobDrift 18s ease-in-out infinite;
+}
+.blob1 { width:440px;height:440px;background:#a9c9ff;top:-90px;left:-110px;animation-delay:0s; }
+.blob2 { width:330px;height:330px;background:#ffbbec;bottom:50px;right:-70px;animation-delay:-6s; }
+.blob3 { width:270px;height:270px;background:#ffc3a0;top:42%;left:58%;animation-delay:-12s; }
+@keyframes blobDrift {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%      { transform: translate(28px,-18px) scale(1.06); }
+  66%      { transform: translate(-18px,26px) scale(0.94); }
+}
+
+/* ADMIN GEAR */
+#adminToggleBtn {
+  position: fixed; top:18px; right:18px; z-index:1000;
+  background: rgba(255,255,255,0.28);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  border-radius: 50%; width:38px; height:38px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:16px; backdrop-filter:blur(10px);
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+#adminToggleBtn:hover { transform:scale(1.13); box-shadow:0 4px 18px rgba(0,0,0,0.14); }
+
+/* ADMIN DROPDOWN */
+#adminDropdown {
+  position:fixed; top:64px; right:18px; z-index:999;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(22px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--r); padding:16px; width:240px;
+  box-shadow: var(--shadow);
+  display:none; flex-direction:column; gap:10px;
+}
+#adminDropdown.open { display:flex; animation: dropIn 0.22s cubic-bezier(.34,1.56,.64,1); }
+@keyframes dropIn {
+  from { opacity:0; transform:translateY(-8px) scale(0.96); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+#adminDropdown label { font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--soft);text-transform:uppercase; }
+#adminPassInput {
+  width:100%; padding:9px 12px;
+  border-radius:var(--rs); border:1.5px solid rgba(169,201,255,0.5);
+  background:rgba(255,255,255,0.6); font-family:inherit; font-size:13px; outline:none;
+  transition:border-color .2s;
+}
+#adminPassInput:focus { border-color:var(--c1); }
+#adminEnterBtn {
+  padding:9px; border-radius:var(--rs); border:none;
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  font-family:inherit; font-size:13px; font-weight:700;
+  cursor:pointer; color:var(--text); transition:opacity .2s,transform .15s;
+}
+#adminEnterBtn:hover { opacity:.85; transform:scale(1.02); }
+#adminStatus { font-size:11px;text-align:center;color:#e53e3e;min-height:14px;font-weight:600; }
+#adminPanel { display:none; flex-direction:column; gap:10px; }
+.aBtn {
+  padding:9px 12px; border-radius:var(--rs);
+  border:1.5px solid rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.5); font-family:inherit;
+  font-size:12px; font-weight:700; cursor:pointer; text-align:left;
+  transition:background .2s,transform .15s; color:var(--text);
+}
+.aBtn:hover { background:rgba(255,255,255,0.8); transform:scale(1.02); }
+.aBtn.danger { border-color:rgba(255,100,100,0.4); color:#c0392b; }
+
+/* MAIN */
+main {
+  position:relative; z-index:1;
+  max-width:880px; margin:0 auto; padding:56px 20px 90px;
+}
+
+/* HERO */
+.hero { text-align:center; margin-bottom:52px; }
+.logo-wrap {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:90px; height:90px; border-radius:26px;
+  background:var(--glass); border:2px solid var(--glass-border);
+  box-shadow:var(--shadow); margin-bottom:20px;
+  overflow:hidden; backdrop-filter:blur(12px);
+}
+.logo-wrap img { width:100%; height:100%; object-fit:cover; }
+.logo-fallback { font-size:36px; line-height:1; }
+.hero h1 {
+  font-size: clamp(2rem,5vw,3.1rem); font-weight:800; letter-spacing:-.03em;
+  background: linear-gradient(135deg,#6a89cc,#c06c9f,#e08060);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:12px;
+}
+.hero p { color:var(--soft); font-size:15px; font-weight:500; max-width:420px; margin:0 auto; line-height:1.65; }
+
+/* SECTION LABEL */
+.section-label { font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin-bottom:14px;padding-left:2px; }
+
+/* GRID */
+#utilityGrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(262px,1fr)); gap:16px; margin-bottom:32px; }
+
+/* CARD */
+.card {
+  position:relative;
+  background:var(--glass); border:1.5px solid var(--glass-border);
+  border-radius:var(--r); padding:20px 20px 16px;
+  backdrop-filter:blur(14px); box-shadow:var(--shadow);
+  cursor:pointer; display:flex; flex-direction:column; gap:8px;
+  user-select:none;
+  transition: transform 0.22s cubic-bezier(.22,1,.36,1), box-shadow 0.22s;
+}
+.card:hover { transform:translateY(-5px); box-shadow:0 18px 44px rgba(120,80,180,0.19); }
+.card:active { transform:scale(0.97); }
+.card-icon { font-size:22px; line-height:1; }
+.card-title { font-size:14px; font-weight:700; color:var(--text); line-height:1.3; }
+.card-env {
+  font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:3px 8px; border-radius:20px; display:inline-block; width:fit-content;
+}
+.env-console { background:rgba(99,179,237,.25); color:#2b6cb0; }
+.env-python  { background:rgba(154,230,180,.25); color:#276749; }
+.env-bash    { background:rgba(251,211,141,.25); color:#7b4f00; }
+.env-custom  { background:rgba(214,188,250,.25); color:#553c9a; }
+
+.copy-toast {
+  position:absolute; bottom:10px; right:14px;
+  font-size:11px; font-weight:700; color:#2f855a;
+  background:rgba(198,246,213,0.92); border-radius:20px; padding:3px 10px;
+  opacity:0; transition:opacity .18s; pointer-events:none;
+}
+.copy-toast.show { opacity:1; }
+
+.trash-btn {
+  position:absolute; top:10px; right:10px;
+  background:rgba(252,90,90,.15); border:1.5px solid rgba(252,90,90,.35);
+  border-radius:50%; width:28px; height:28px;
+  display:none; align-items:center; justify-content:center;
+  cursor:pointer; font-size:13px; z-index:10;
+  transition:background .18s,transform .15s;
+}
+.trash-btn:hover { background:rgba(252,90,90,.35); transform:scale(1.1); }
+.edit-mode .trash-btn { display:flex; }
+.edit-mode.card { cursor:default; }
+
+/* MANAGE BAR */
+#manageBar {
+  display:none; align-items:center; gap:12px; margin-bottom:18px;
+  flex-wrap:wrap;
+}
+#manageBar.visible { display:flex; }
+.mBtn {
+  padding:9px 18px; border-radius:var(--rs); font-family:inherit;
+  font-size:12px; font-weight:700; cursor:pointer; transition:background .2s,transform .15s;
+  color:var(--text);
+}
+#editModeToggle { border:1.5px solid rgba(255,100,100,.4); background:rgba(255,200,200,.2); color:#c0392b; }
+#editModeToggle:hover { background:rgba(255,200,200,.4); }
+#editModeToggle.on { background:rgba(252,90,90,.22); }
+#addToggle { border:1.5px solid rgba(169,201,255,.5); background:rgba(169,201,255,.15); }
+#addToggle:hover { background:rgba(169,201,255,.3); }
+#portalToggle { border:1.5px solid rgba(255,187,236,.5); background:rgba(255,187,236,.15); }
+#portalToggle:hover { background:rgba(255,187,236,.3); }
+
+/* ADD SECTION */
+#addSection {
+  display:none; flex-direction:column; gap:12px;
+  background:var(--glass); border:1.5px dashed rgba(169,201,255,.7);
+  border-radius:var(--r); padding:24px; backdrop-filter:blur(14px); margin-bottom:24px;
+}
+#addSection.visible { display:flex; animation:fadeUp .28s ease; }
+.add-title { font-size:13px; font-weight:800; color:var(--soft); }
+.field-row { display:flex; gap:10px; flex-wrap:wrap; }
+.field-row input, .field-row select,
+#addSection input, #addSection select {
+  flex:1; min-width:140px; padding:10px 14px;
+  border-radius:var(--rs); border:1.5px solid rgba(169,201,255,.5);
+  background:rgba(255,255,255,.6); font-family:inherit; font-size:13px;
+  outline:none; color:var(--text); transition:border-color .2s;
+}
+#addSection input:focus, #addSection select:focus { border-color:var(--c1); }
+#addSection textarea {
+  width:100%; min-height:120px; padding:12px 14px;
+  border-radius:var(--rs); border:1.5px solid rgba(169,201,255,.5);
+  background:rgba(255,255,255,.6); font-family:'Courier New',monospace;
+  font-size:12px; outline:none; resize:vertical; color:var(--text); transition:border-color .2s;
+}
+#addSection textarea:focus { border-color:var(--c1); }
+.save-btn {
+  padding:11px 24px; border-radius:var(--rs); border:none;
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  font-family:inherit; font-size:13px; font-weight:700;
+  cursor:pointer; color:var(--text); align-self:flex-start;
+  transition:opacity .2s,transform .15s;
+}
+.save-btn:hover { opacity:.85; transform:scale(1.02); }
+
+/* CODING PORTAL */
+#codingPortal {
+  display:none; flex-direction:column; gap:14px;
+  background:var(--glass); border:1.5px solid var(--glass-border);
+  border-radius:var(--r); padding:24px; backdrop-filter:blur(14px); margin-bottom:24px;
+}
+#codingPortal.visible { display:flex; animation:fadeUp .28s ease; }
+.portal-title { font-size:14px; font-weight:800; color:var(--text); }
+#codeEditorInput {
+  width:100%; min-height:160px; padding:14px;
+  border-radius:var(--rs); border:1.5px solid rgba(169,201,255,.5);
+  background:rgba(255,255,255,.6); font-family:'Courier New',monospace;
+  font-size:12px; outline:none; resize:vertical; color:var(--text); transition:border-color .2s;
+}
+#codeEditorInput:focus { border-color:var(--c1); }
+.portal-btns { display:flex; gap:10px; flex-wrap:wrap; }
+.pBtn {
+  padding:10px 20px; border-radius:var(--rs);
+  border:1.5px solid rgba(255,255,255,.6); background:rgba(255,255,255,.5);
+  font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;
+  transition:background .2s,transform .15s; color:var(--text);
+}
+.pBtn:hover { background:rgba(255,255,255,.82); transform:scale(1.02); }
+.pBtn.confirm { background:linear-gradient(90deg,var(--c1),var(--c2)); border-color:transparent; }
+#previewFrame {
+  width:100%; height:320px; border:1.5px solid rgba(169,201,255,.4);
+  border-radius:var(--rs); background:#fff; display:none;
+}
+#previewFrame.visible { display:block; }
+.preview-actions { display:none; gap:10px; flex-wrap:wrap; }
+.preview-actions.visible { display:flex; }
+
+/* FOOTER */
+footer {
+  position:relative; z-index:1; text-align:center;
+  padding:22px; font-size:11px; color:var(--soft); font-weight:600; letter-spacing:.05em;
+}
+
+/* SCROLL REVEAL — elements start hidden, slide in as they approach center */
+.reveal {
+  opacity: 0;
+  transform: translateY(52px);
+  transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1);
+  will-change: opacity, transform;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger children of a reveal-group */
+.reveal-group > .card {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.5s cubic-bezier(.22,1,.36,1), transform 0.5s cubic-bezier(.22,1,.36,1);
+}
+.reveal-group.in > .card:nth-child(1) { transition-delay:.04s; }
+.reveal-group.in > .card:nth-child(2) { transition-delay:.12s; }
+.reveal-group.in > .card:nth-child(3) { transition-delay:.20s; }
+.reveal-group.in > .card:nth-child(4) { transition-delay:.28s; }
+.reveal-group.in > .card:nth-child(5) { transition-delay:.36s; }
+.reveal-group.in > .card:nth-child(n+6) { transition-delay:.42s; }
+.reveal-group.in > .card { opacity:1; transform:translateY(0); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+<!-- ADMIN GEAR -->
+<button id="adminToggleBtn" title="Admin" aria-label="Admin">⚙️</button>
+
+<div id="adminDropdown">
+  <div id="adminLoginSection">
+    <label>Admin Access</label>
+    <input type="password" id="adminPassInput" placeholder="Password" autocomplete="off" />
+    <button id="adminEnterBtn">Enter</button>
+    <div id="adminStatus"></div>
+  </div>
+  <div id="adminPanel">
+    <span style="font-size:11px;font-weight:700;color:#2f855a;">✓ Authenticated</span>
+    <button class="aBtn" id="adminManageBtn">🗂 Manage Buttons</button>
+    <button class="aBtn" id="adminAddBtn">＋ Add New Utility</button>
+    <button class="aBtn" id="adminPortalBtn">🖊 Coding Portal</button>
+    <button class="aBtn danger" id="adminLogoutBtn">Sign Out</button>
+  </div>
+</div>
+
+<main>
+  <!-- HERO -->
+  <div class="hero reveal">
+    <div class="logo-wrap">
+      <img
+        src="https://raw.githubusercontent.com/Instagram-aayeddie/IMAGES/main/ChatGPT%20Image%20Jun%2014%2C%202026%20at%2006_01_32%20PM.png"
+        alt="Aayeddie's Studio"
+        onerror="this.style.display='none';this.parentElement.innerHTML='<span class=logo-fallback>🎬</span>'"
+      />
+    </div>
+    <h1>Aayeddie's Studio</h1>
+    <p>Your personal toolkit for clipping, customizing, and crafting — all in one place.</p>
+  </div>
+
+  <!-- ADMIN MANAGE BAR -->
+  <div id="manageBar" class="reveal">
+    <button class="mBtn" id="editModeToggle">🗑 Edit Mode: Off</button>
+    <button class="mBtn" id="addToggle">＋ Add Utility</button>
+    <button class="mBtn" id="portalToggle">🖊 Coding Portal</button>
+  </div>
+
+  <!-- ADD SECTION -->
+  <div id="addSection">
+    <div class="add-title">New Utility</div>
+    <div class="field-row">
+      <input type="text" id="newTitle" placeholder="Button title (e.g. Discord Status Launcher)" />
+      <select id="newEnv">
+        <option value="console">Chrome Console</option>
+        <option value="python">Python Terminal</option>
+        <option value="bash">Bash / Terminal</option>
+        <option value="powershell">PowerShell</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+    <input type="text" id="newIcon" placeholder='Icon emoji (e.g. 🎮)' style="max-width:180px;" />
+    <textarea id="newCode" placeholder="Paste your script here..."></textarea>
+    <button class="save-btn" id="saveNewBtn">Save Utility</button>
+  </div>
+
+  <!-- CODING PORTAL -->
+  <div id="codingPortal">
+    <div class="portal-title">🖊 Layout Coding Portal</div>
+    <textarea id="codeEditorInput" placeholder="Paste HTML or JS here to preview before applying..."></textarea>
+    <div class="portal-btns">
+      <button class="pBtn" id="previewBtn">Preview</button>
+    </div>
+    <iframe id="previewFrame" sandbox="allow-scripts"></iframe>
+    <div class="preview-actions">
+      <button class="pBtn confirm" id="confirmUpdateBtn">✓ Confirm & Apply</button>
+      <button class="pBtn" id="denyUpdateBtn">✕ Discard</button>
+    </div>
+  </div>
+
+  <div class="section-label reveal">Your Utilities</div>
+  <div id="utilityGrid" class="reveal-group"></div>
+</main>
+
+<footer class="reveal">Aayeddie's Studio &nbsp;·&nbsp; Built for creators</footer>
+
+<script>
+/* ── DATA ── */
+const STORE_KEY = 'clipkit_v3';
+const DEFAULTS = [
+  {
+    id:'yt-clip', icon:'🎬',
+    title:'YouTube Clip Injector',
+    env:'console',
+    code:`(function() {
+    if (window.currentYTRecorder) {
+        window.removeEventListener('keydown', window.currentYTRecorder, true);
+        console.log("%c[Recorder] Cleaned up previous instance.", "color:orange;");
+    }
+    let video = document.querySelector('video');
+    if (!video) { console.error("No video found!"); return; }
+    let stream = video.captureStream ? video.captureStream() : video.mozCaptureStream();
+    let mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
+    let recordedChunks = [], isStopping = false;
+    mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+        if (recordedChunks.length === 0) { isStopping = false; return; }
+        let blob = new Blob(recordedChunks, { type: 'video/webm' });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        let site = window.location.hostname.replace('www.','').split('.');
+        a.download = site + '-capture-' + Date.now() + '.webm';
+        a.click(); URL.revokeObjectURL(url); recordedChunks = [];
+        console.log("%c[Recorder] Saved!", "color:green;font-weight:bold;");
+        setTimeout(() => { isStopping = false; }, 500);
+    };
+    function handleHotkeys(e) {
+        if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
+        if (e.key === 'Enter' && mediaRecorder.state === 'inactive' && !isStopping) {
+            recordedChunks = []; mediaRecorder.start();
+            console.log("%c[Recorder] Recording...", "color:red;font-weight:bold;");
+        }
+        if ((e.code === 'Space' || e.key === ' ') && mediaRecorder.state === 'recording' && !isStopping) {
+            isStopping = true; mediaRecorder.stop();
+        }
+    }
+    window.addEventListener('keydown', handleHotkeys, true);
+    window.currentYTRecorder = handleHotkeys;
+    console.log("%c[Recorder] Ready. Enter = start, Space = save.", "color:blue;font-weight:bold;");
+})();`
+  },
+  {
+    id:'ig-clip', icon:'📸',
+    title:'Instagram Apple-Compatible Clipper',
+    env:'console',
+    code:`(async () => {
+const getVid = () => { const v = document.querySelector('video'); if(v){v.muted=false;v.play().catch(()=>{})} return v; };
+const record = (v) => {
+  if(window.isIGRecording){console.warn('Already recording.');return;}
+  window.isIGRecording = true;
+  const stream = v.captureStream ? v.captureStream() : v.mozCaptureStream();
+  let opts = {mimeType:'video/mp4;codecs=avc1.42E01E,mp4a.40.2',videoBitsPerSecond:8000000};
+  if(!MediaRecorder.isTypeSupported(opts.mimeType)) opts={mimeType:'video/mp4;codecs=avc1',videoBitsPerSecond:8000000};
+  if(!MediaRecorder.isTypeSupported(opts.mimeType)) opts={mimeType:'video/mp4',videoBitsPerSecond:8000000};
+  const rec = new MediaRecorder(stream, opts);
+  const chunks = [];
+  rec.ondataavailable = e => e.data.size > 0 && chunks.push(e.data);
+  rec.onstop = () => {
+    const blob = new Blob(chunks, {type:'video/mp4'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'instagram_' + new Date().toISOString().replace(/[:.]/g,'-') + '.mp4';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    window.isIGRecording = false;
+    console.log('Apple MP4 downloaded.');
+  };
+  const stop = () => { if(rec.state==='recording'){rec.stop();v.removeEventListener('ended',stop);v.removeEventListener('pause',stop);} };
+  v.addEventListener('ended',stop); v.addEventListener('pause',stop);
+  rec.start();
+  console.log('%cRecording — Apple .mp4 output','color:#00E5FF;font-weight:bold;');
+};
+const tgt = getVid();
+if(tgt){record(tgt);}else{
+  const obs = new MutationObserver((_,o)=>{const v=getVid();if(v){record(v);o.disconnect();}});
+  obs.observe(document.body,{childList:true,subtree:true});
+}
+})();`
+  },
+  {
+    id:'discord-rpc', icon:'🎮',
+    title:'Discord Multi-Game Status Launcher',
+    env:'python',
+    code:`import time
+import sys
+from pypresence import Presence
+
+GAME_PROFILES = {
+    "1": {
+        "game_name": "Super Smash Bros Ultimate",
+        "client_id": "1514609020311306250",
+        "default_details": "Playing Online",
+        "default_state": "Elite Smash - 1v1",
+        "default_logo": "super-smash-bros-ultimate-official-hi-res-icon"
+    },
+    "2": {
+        "game_name": "Minecraft",
+        "client_id": "PASTE_MINECRAFT_APP_ID_HERE",
+        "default_details": "Mining Diamonds",
+        "default_state": "Survival Mode",
+        "default_logo": "minecraft_block_icon"
+    },
+    "3": {
+        "game_name": "Google Chrome",
+        "client_id": "PASTE_CHROME_APP_ID_HERE",
+        "default_details": "Browsing the Web",
+        "default_state": "Researching",
+        "default_logo": "chrome_logo"
+    }
+}
+
+def main():
+    print("=========================================")
+    print("    EXPERIMENTAL MULTI-GAME LAUNCHER     ")
+    print("=========================================")
+    for key, p in GAME_PROFILES.items():
+        print(f"[{key}] {p['game_name']}")
+    print("[Q] Quit")
+    choice = input("\\nChoose: ").strip()
+    if choice.lower() == 'q': sys.exit()
+    profile = GAME_PROFILES.get(choice, GAME_PROFILES["1"])
+
+    details = input(f"Details (Enter for '{profile['default_details']}'): ").strip() or profile['default_details']
+    state   = input(f"State   (Enter for '{profile['default_state']}'): ").strip() or profile['default_state']
+    logo    = input(f"Logo    (Enter for '{profile['default_logo']}'): ").strip() or profile['default_logo']
+
+    rpc = Presence(profile['client_id'])
+    try:
+        rpc.connect()
+        kwargs = {"details": details, "state": state, "start": time.time()}
+        if logo.lower() != 'none':
+            kwargs["large_image"] = logo
+            kwargs["large_text"]  = profile['game_name']
+        rpc.update(**kwargs)
+        print(f"\\nSUCCESS! {profile['game_name']} status live. Ctrl+C to stop.")
+        while True: time.sleep(15)
+    except KeyboardInterrupt:
+        try: rpc.close()
+        except: pass
+        print("Status cleared.")
+    except Exception as e:
+        print(f"[X] Error: {e}")
+
+if __name__ == "__main__":
+    main()`
+  }
+];
+
+function loadUtils() {
+  try { const r = localStorage.getItem(STORE_KEY); if(r) return JSON.parse(r); } catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULTS));
+}
+function saveUtils(u) { try { localStorage.setItem(STORE_KEY, JSON.stringify(u)); } catch(e){} }
+
+let utils = loadUtils();
+let isAdmin = false;
+let editMode = false;
+
+function checkPw(v) { return btoa(unescape(encodeURIComponent(v))) === btoa(unescape(encodeURIComponent('Beleza999%'))); }
+
+/* ── ENV META ── */
+const ENV = {
+  console:    {label:'Chrome Console', cls:'env-console'},
+  python:     {label:'Python Terminal', cls:'env-python'},
+  bash:       {label:'Bash / Terminal', cls:'env-bash'},
+  powershell: {label:'PowerShell',      cls:'env-bash'},
+  custom:     {label:'Custom',          cls:'env-custom'},
+};
+
+/* ── RENDER GRID ── */
+function renderGrid() {
+  const grid = document.getElementById('utilityGrid');
+  grid.innerHTML = '';
+  utils.forEach((u, idx) => {
+    const m = ENV[u.env] || ENV.custom;
+    const card = document.createElement('div');
+    card.className = 'card' + (editMode ? ' edit-mode' : '');
+    card.innerHTML = `
+      <button class="trash-btn" data-idx="${idx}" title="Delete">🗑</button>
+      <div class="card-icon">${u.icon||'📋'}</div>
+      <div class="card-title">${esc(u.title)}</div>
+      <span class="card-env ${m.cls}">Run in: ${m.label}</span>
+      <div class="copy-toast">Copied!</div>
+    `;
+    if (!editMode) {
+      card.addEventListener('click', () => copyCode(u.code, card));
+    }
+    card.querySelector('.trash-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      if (confirm('Delete "' + u.title + '"?')) { utils.splice(idx,1); saveUtils(utils); renderGrid(); }
+    });
+    grid.appendChild(card);
+  });
+  initReveal(); // re-run reveal on new cards
+}
+
+function copyCode(code, card) {
+  const show = () => { const t=card.querySelector('.copy-toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); };
+  if (navigator.clipboard) { navigator.clipboard.writeText(code).then(show).catch(()=>fallback(code,show)); }
+  else { fallback(code, show); }
+}
+function fallback(code, cb) {
+  const ta = document.createElement('textarea'); ta.value=code; document.body.appendChild(ta); ta.select();
+  document.execCommand('copy'); document.body.removeChild(ta); cb();
+}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── ADMIN ── */
+const $= id => document.getElementById(id);
+$('adminToggleBtn').addEventListener('click', e => { e.stopPropagation(); $('adminDropdown').classList.toggle('open'); });
+document.addEventListener('click', e => { if (!$('adminDropdown').contains(e.target) && e.target !== $('adminToggleBtn')) $('adminDropdown').classList.remove('open'); });
+$('adminEnterBtn').addEventListener('click', tryLogin);
+$('adminPassInput').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+
+function tryLogin() {
+  if (checkPw($('adminPassInput').value)) {
+    isAdmin = true;
+    $('adminLoginSection').style.display = 'none';
+    $('adminPanel').style.display = 'flex';
+    $('adminPassInput').value = '';
+    $('adminStatus').textContent = '';
+    $('manageBar').classList.add('visible');
+  } else {
+    $('adminStatus').textContent = 'Incorrect password.';
+    $('adminPassInput').value = '';
+    setTimeout(()=>$('adminStatus').textContent='', 2000);
+  }
+}
+
+$('adminLogoutBtn').addEventListener('click', () => {
+  isAdmin = false; editMode = false;
+  $('adminPanel').style.display = 'none';
+  $('adminLoginSection').style.display = '';
+  $('manageBar').classList.remove('visible');
+  $('addSection').classList.remove('visible');
+  $('codingPortal').classList.remove('visible');
+  $('editModeToggle').classList.remove('on');
+  $('editModeToggle').textContent = '🗑 Edit Mode: Off';
+  $('adminDropdown').classList.remove('open');
+  renderGrid();
+});
+$('adminManageBtn').addEventListener('click',()=>$('adminDropdown').classList.remove('open'));
+$('adminAddBtn').addEventListener('click',()=>{ $('addSection').classList.toggle('visible'); $('adminDropdown').classList.remove('open'); });
+$('adminPortalBtn').addEventListener('click',()=>{ $('codingPortal').classList.toggle('visible'); $('adminDropdown').classList.remove('open'); });
+
+$('editModeToggle').addEventListener('click',()=>{
+  editMode=!editMode;
+  $('editModeToggle').textContent = editMode ? '✕ Edit Mode: On' : '🗑 Edit Mode: Off';
+  $('editModeToggle').classList.toggle('on', editMode);
+  renderGrid();
+});
+$('addToggle').addEventListener('click',()=>$('addSection').classList.toggle('visible'));
+$('portalToggle').addEventListener('click',()=>$('codingPortal').classList.toggle('visible'));
+
+/* ── ADD NEW ── */
+$('saveNewBtn').addEventListener('click',()=>{
+  const title=$('newTitle').value.trim(), env=$('newEnv').value,
+        icon=$('newIcon').value.trim()||'📋', code=$('newCode').value.trim();
+  if(!title||!code){ alert('Please add a title and code.'); return; }
+  utils.push({id:'custom-'+Date.now(), icon, title, env, code});
+  saveUtils(utils); renderGrid();
+  $('newTitle').value=''; $('newIcon').value=''; $('newCode').value='';
+  $('addSection').classList.remove('visible');
+});
+
+/* ── PORTAL ── */
+$('previewBtn').addEventListener('click',()=>{
+  $('previewFrame').srcdoc=$('codeEditorInput').value;
+  $('previewFrame').classList.add('visible');
+  document.querySelector('.preview-actions').classList.add('visible');
+});
+$('confirmUpdateBtn').addEventListener('click',()=>{
+  if(!confirm('Apply this update to the page?')) return;
+  const w=document.createElement('div'); w.innerHTML=$('codeEditorInput').value; document.body.appendChild(w);
+  $('previewFrame').classList.remove('visible');
+  document.querySelector('.preview-actions').classList.remove('visible');
+  $('codingPortal').classList.remove('visible');
+});
+$('denyUpdateBtn').addEventListener('click',()=>{
+  $('previewFrame').srcdoc='';
+  $('previewFrame').classList.remove('visible');
+  document.querySelector('.preview-actions').classList.remove('visible');
+});
+
+/* ── SCROLL REVEAL ── */
+function initReveal() {
+  const vh = window.innerHeight;
+
+  // Single reveal elements
+  document.querySelectorAll('.reveal').forEach(el => {
+    // Don't hide the hero on first load — it's already in view
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < vh * 0.88 && rect.bottom > vh * 0.12;
+    if (inView) { el.classList.add('in'); }
+    else { el.classList.remove('in'); }
+  });
+
+  // Grid group
+  const grid = document.getElementById('utilityGrid');
+  if (grid) {
+    const rect = grid.getBoundingClientRect();
+    const inView = rect.top < vh * 0.92 && rect.bottom > 0;
+    if (inView) grid.classList.add('in');
+    else grid.classList.remove('in');
+  }
+}
+
+function onScroll() {
+  const vh = window.innerHeight;
+  document.querySelectorAll('.reveal').forEach(el => {
+    const r = el.getBoundingClientRect();
+    // "in" zone: element center is within 88% of viewport
+    const center = (r.top + r.bottom) / 2;
+    const inZone = center > vh * 0.07 && center < vh * 0.93;
+    if (inZone) el.classList.add('in');
+    else el.classList.remove('in');
+  });
+
+  const grid = document.getElementById('utilityGrid');
+  if (grid) {
+    const r = grid.getBoundingClientRect();
+    const inZone = r.top < vh * 0.92 && r.bottom > vh * 0.08;
+    if (inZone) grid.classList.add('in');
+    else grid.classList.remove('in');
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', initReveal, { passive: true });
+
+/* ── INIT ── */
+renderGrid();
+// Small delay so elements paint first, then trigger reveal
+setTimeout(initReveal, 60);
+</script>
+</body>
+</html>
